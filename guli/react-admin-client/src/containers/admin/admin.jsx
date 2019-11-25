@@ -25,7 +25,7 @@ export default function Admin (props) {
       <Sider><LeftNav></LeftNav></Sider>
       <Layout>
         <Header>Header</Header>
-        <Content>
+        <Content style={{ backgroundColor: '#fff', margin: '20px' }}>
           <Switch>
             <Route path='/home' component={Home} ></Route>
             <Route path='/category' component={Category} ></Route>

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useRef } from 'react'
 import { Menu, Icon } from 'antd';
 import { Link, withRouter } from 'react-router-dom'
 
@@ -13,34 +13,35 @@ function LeftNav (props) {
     props.history.push(key)
   }
   //map+递归
-  function getMenuNodes_map (menuList) {
-    console.log(menuList)
-    return menuList.map((item) => {
-      if (!item.children) {
-        return (<Menu.Item key={item.key}>
-          <Icon type={item.icon} />
-          <span>{item.title}</span>
-        </Menu.Item>)
-      }
-      else
-        return (
-          <SubMenu key={item.key}
-            title={
-              <span>
-                <Icon type={item.icon} />
-                <span>{item.title}</span>
-              </span>
-            }
-          >
-            {
-              getMenuNodes_map(item.children)
-            }
-          </SubMenu>
-        )
-    })
-  }
+  // function getMenuNodes_map (menuList) {
+  //   console.log(menuList)
+  //   return menuList.map((item) => {
+  //     if (!item.children) {
+  //       return (<Menu.Item key={item.key}>
+  //         <Icon type={item.icon} />
+  //         <span>{item.title}</span>
+  //       </Menu.Item>)
+  //     }
+  //     else
+  //       return (
+  //         <SubMenu key={item.key}
+  //           title={
+  //             <span>
+  //               <Icon type={item.icon} />
+  //               <span>{item.title}</span>
+  //             </span>
+  //           }
+  //         >
+  //           {
+  //             getMenuNodes_map(item.children)
+  //           }
+  //         </SubMenu>
+  //       )
+  //   })
+  // }
   //reduce+递归
   function getMenuNodes (menuList) {
+    console.log('getnode()')
     const path = props.location.pathname
     return menuList.reduce((pre, item) => {
       if (!item.children) {
@@ -52,7 +53,6 @@ function LeftNav (props) {
       else {
         // debugger
         const citem = item.children.find(item => item.key === path)
-        console.log(citem)
         if (citem)
           //setOpenKey(item.key)
           openkey.current = item.key
