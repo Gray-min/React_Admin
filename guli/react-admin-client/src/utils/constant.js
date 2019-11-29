@@ -1,0 +1,1 @@
+export const BASEIMGURL = 'http://localhost:5000/upload/'

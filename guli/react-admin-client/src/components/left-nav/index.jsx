@@ -43,6 +43,7 @@ function LeftNav (props) {
   function getMenuNodes (menuList) {
     console.log('getnode()')
     const path = props.location.pathname
+    console.log(path)
     return menuList.reduce((pre, item) => {
       if (!item.children) {
         pre.push(<Menu.Item key={item.key}>
@@ -52,7 +53,7 @@ function LeftNav (props) {
       }
       else {
         // debugger
-        const citem = item.children.find(item => item.key === path)
+        const citem = item.children.find(item => path.indexOf(item.key) === 0)
         if (citem)
           //setOpenKey(item.key)
           openkey.current = item.key
@@ -76,6 +77,9 @@ function LeftNav (props) {
     }, [])
   }
   const menu = getMenuNodes(menuConfig)
+  let path = props.location.pathname
+  if (path.indexOf('/product') === 0)
+    path = '/product'
   return <>
     <div className='left-nav'>
       <Link to='/home' className='left-nav-header'>
@@ -84,7 +88,7 @@ function LeftNav (props) {
       </Link>
       <Menu
         mode="inline"
-        selectedKeys={[props.location.pathname]}
+        selectedKeys={[path]}
         defaultOpenKeys={[openkey.current]}
         onClick={handleClick}
         theme='dark'

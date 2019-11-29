@@ -14,6 +14,33 @@ export const reqCategoryLists = (parentId) => ajax('/manage/category/list', { pa
 //更新品类名称
 export const reqUpdateCategory = ({ categoryId, categoryName }) => ajax('/manage/category/update', { categoryId, categoryName }, 'POST')
 
+//获取商品分页列表
+export const reqProductList = ({ pageNum, pageSize }) => ajax('/manage/product/list', { pageNum, pageSize })
+
+//根据ID/Name搜索产品分页列表
+export const reqSearchProducts = ({ pageNum, pageSize, searchType, searchName }) => ajax('/manage/product/search', { pageNum, pageSize, [searchType]: searchName })
+
+//根据分类ID获取分类
+export const reqCategoryInfo = (categoryId) => ajax('/manage/category/info', { categoryId })
+
+//对商品进行上架/下架处理
+export const reqUpdateStatus = ({ productId, status }) => ajax('/manage/product/updateStatus', { productId, status }, 'POST')
+
+//删除图片
+export const reqImgDelete = (name) => ajax('/manage/img/delete', { name }, 'POST')
+
+//添加或删除商品
+export const reqAddOrUpdate = (product) => ajax('/manage/product/' + (product._id ? 'update' : 'add'), product, 'POST')
+
+//获取角色列表
+export const reqRoleList = () => ajax('/manage/role/list')
+
+//添加角色
+export const reqAddRole = (roleName) => ajax('/manage/role/add', roleName, 'POST')
+
+//更新角色(给角色设置权限)
+export const reqUpdateRole = ({ _id, menus, auth_time, auth_name }) => ajax('/manage/role/update', { _id, menus, auth_time, auth_name }, 'POST')
+
 //获取天气信息
 export const reqWeather = (city) => {
   return new Promise((resolve, reject) => {

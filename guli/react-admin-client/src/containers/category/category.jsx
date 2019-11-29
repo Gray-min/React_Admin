@@ -26,9 +26,9 @@ export default function Category () {
 
   //处理table显示
   const getCategory = useCallback(async () => {
-    console.log('getCategory', parentId)
     setLoading(true)
     const result = await reqCategoryLists(parentId)
+    console.log(result)
     setLoading(false)
     if (result.status === 0) {
       if (parentId === 0) {
