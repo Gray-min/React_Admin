@@ -47,7 +47,7 @@ function Header (props) {
   function logout () {
     memoryUtils.user = {}
     storeUtils.removeUser()
-    props.history.replace('/')
+    props.history.replace('/login')
   }
   //获取标题
   useEffect(() => {

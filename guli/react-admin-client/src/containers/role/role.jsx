@@ -6,7 +6,7 @@ import memoryUtils from '../../utils/memoryUtils'
 import { reqRoleList, reqAddRole, reqUpdateRole } from '../../api'
 import AddRole from './add-role'
 import AuthRole from './auth-role'
-export default function Role () {
+export default function Role (props) {
   const columns = useRef([])
   const addForm = useRef()
   const [roleList, setRoleList] = useState()
@@ -75,6 +75,7 @@ export default function Role () {
     setShowAdd(false)
     addForm.current.resetFields()
   }
+  //角色授权
   async function handleAuth () {
     console.log('menus', AuthRole.prototype.getCheckedNode())
     const { _id } = role
@@ -85,8 +86,14 @@ export default function Role () {
     setShowAuth(false)
     const result = await reqUpdateRole({ _id, menus, auth_name, auth_time })
     if (!result.status) {
-      message.success('授权成功')
-      getRoleList()
+      if (memoryUtils.user.role_id === _id) {
+        message.success('你的权限发生变动请重新登陆')
+        props.history.replace('/login')
+      }
+      else {
+        message.success('授权成功')
+        getRoleList()
+      }
     } else {
       message.error('授权失败')
     }

@@ -41,6 +41,15 @@ export const reqAddRole = (roleName) => ajax('/manage/role/add', roleName, 'POST
 //更新角色(给角色设置权限)
 export const reqUpdateRole = ({ _id, menus, auth_time, auth_name }) => ajax('/manage/role/update', { _id, menus, auth_time, auth_name }, 'POST')
 
+//获取用户列表
+export const reqUserList = () => ajax('/manage/user/list')
+
+//添加或更新用户
+export const reqAddOrUpdateUser = (user) => ajax(`/manage/user/${user._id ? 'update' : 'add'}`, user, 'POST')
+
+//删除用户
+export const reqDeleteUser = (userId) => ajax('/manage/user/delete', { userId }, 'POST')
+
 //获取天气信息
 export const reqWeather = (city) => {
   return new Promise((resolve, reject) => {

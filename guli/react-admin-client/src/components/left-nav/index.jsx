@@ -5,6 +5,7 @@ import { Link, withRouter } from 'react-router-dom'
 import './index.less'
 import logo from '../../assets/images/logo.png'
 import menuConfig from '../../config/menuConfig'
+import memoryUtils from '../../utils/memoryUtils'
 const { SubMenu } = Menu;
 function LeftNav (props) {
   //const [openKey, setOpenKey] = useState()
@@ -40,38 +41,48 @@ function LeftNav (props) {
   //   })
   // }
   //reduce+递归
+  function hasAuth (item) {
+    const { key, isPublic } = item
+    const menus = memoryUtils.user.role.menus
+    const username = memoryUtils.user.username
+    if (isPublic || username === 'admin' || menus.indexOf(key) !== -1) {
+      return true
+    } else if (item.children)
+      return !!item.children.find(item => menus.indexOf(item.key) !== -1)
+  }
   function getMenuNodes (menuList) {
     console.log('getnode()')
     const path = props.location.pathname
     console.log(path)
     return menuList.reduce((pre, item) => {
-      if (!item.children) {
-        pre.push(<Menu.Item key={item.key}>
-          <Icon type={item.icon} />
-          <span>{item.title}</span>
-        </Menu.Item>)
-      }
-      else {
-        // debugger
-        const citem = item.children.find(item => path.indexOf(item.key) === 0)
-        if (citem)
-          //setOpenKey(item.key)
-          openkey.current = item.key
-        pre.push(
-          <SubMenu key={item.key}
-            title={
-              <span>
-                <Icon type={item.icon} />
-                <span>{item.title}</span>
-              </span>
-            }
-          >
-            {
-              getMenuNodes(item.children)
-            }
-          </SubMenu>
-        )
-
+      if (hasAuth(item)) {
+        if (!item.children) {
+          pre.push(<Menu.Item key={item.key}>
+            <Icon type={item.icon} />
+            <span>{item.title}</span>
+          </Menu.Item>)
+        }
+        else {
+          // debugger
+          const citem = item.children.find(item => path.indexOf(item.key) === 0)
+          if (citem)
+            //setOpenKey(item.key)
+            openkey.current = item.key
+          pre.push(
+            <SubMenu key={item.key}
+              title={
+                <span>
+                  <Icon type={item.icon} />
+                  <span>{item.title}</span>
+                </span>
+              }
+            >
+              {
+                getMenuNodes(item.children)
+              }
+            </SubMenu>
+          )
+        }
       }
       return pre
     }, [])
